@@ -1,0 +1,21 @@
+
+.crypto-news-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1d1d20; 
+    color: #ffffff; 
+  }
+  
+  .crypto-news-title {
+    text-align: center;
+    color: #ffffff;
+  }
+  
+  .carousel-item h2 {
+    color: #ffffff; 
+  }
+  
+  .carousel-item p a {
+    color: #ffffff;
+  }
