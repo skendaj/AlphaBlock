@@ -1,10 +1,12 @@
-const Users = require('../controllers/user.controller');
-const { authenticate } = require('../config/jwt.config');
+const UserController = require('../controllers/user.controller');  
 
-module.exports = app => {
-  app.post("/api/register", Users.register);
-  app.post("/api/login", Users.login);
-  app.get("/api/users", authenticate, (req, res) => {
-    Users.getAll(req, res);
-  });
-};
+module.exports = (app) => {
+    app.post("/api/register", UserController.register);
+    app.get('/api/user',  UserController.findAllUsers);
+    app.get('/api/user/:id', UserController.getUser);
+    app.post("/api/login", UserController.login);
+    app.post("/api/logout", UserController.logout);
+    app.patch('/api/user/edit/:id', UserController.updateUser);
+    app.delete('/api/user/:id', UserController.deleteUser);
+    app.post("/api/buycoin/:id", UserController.buyCoin);
+}

@@ -27,7 +27,7 @@ module.exports.createComment = (req, res) => {
 
 module.exports.getComments = (req, res) => {
   Comment.find()
-    .populate('user', 'firstName lastName photo') // Populate the 'user' field with specific fields of the User model
+    .populate('user', 'firstName lastName photo')
     .then((comments) => {
       res.json(comments);
     })

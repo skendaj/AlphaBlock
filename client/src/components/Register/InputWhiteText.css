@@ -1,3 +1,16 @@
-.white-text {
-    color: white;
-  }
+.white-input {
+  color: white;
+}
+
+.white-input::placeholder {
+  color: white;
+  opacity: 0.7;
+}
+
+.MuiInputBase-input {
+  color: white;
+}
+
+.MuiFormLabel-root {
+  color: white;
+}

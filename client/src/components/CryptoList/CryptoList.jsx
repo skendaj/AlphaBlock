@@ -17,8 +17,9 @@ import StarIcon from '@mui/icons-material/Star';
 import Star from '@mui/icons-material/Star';
 import Typography from '@mui/material/Typography';
 import '../CryptoList/CryptoList.css';
-import News from "../../components/News/News"
-
+import News from "../../components/News/News";
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import BuyForm from "../../components/BuyForm/BuyForm";
 
 const TransparentTable = styled(Table)({
   backgroundColor: 'transparent',
@@ -27,29 +28,24 @@ const TransparentTable = styled(Table)({
     borderBottom: 'none',
   },
 });
-
 const LogoImage = styled('img')({
   marginRight: '10px',
   width: '50px',
   height: '50px',
 });
-
 const Heading = styled('h2')({
   textAlign: 'start',
   marginLeft: "2.5%",
   color: '#ffffff',
 });
-
 const Paragraph = styled('p')({
   textAlign: 'start',
   marginLeft: "2.5%",
   color: '#ffffff',
 });
-
 const BoldText = styled('span')({
   fontWeight: 'bold',
 });
-
 const CenteredTableContainer = styled(TableContainer)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
@@ -57,36 +53,30 @@ const CenteredTableContainer = styled(TableContainer)(({ theme }) => ({
     display: 'block',
   },
 }));
-
 const CoinName = styled('span')({
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
 });
-
 const GreySymbol = styled('span')({
   color: '#808a9d',
   fontSize: '12px',
 });
-
 const ChangePercentCell = styled(TableCell)(({ theme, isPositive }) => ({
   color: isPositive ? '#16c784' : '#ea3943',
 }));
-
 const ArrowIcon = styled('span')(({ theme, isPositive }) => ({
   marginLeft: '4px',
   display: 'inline-flex',
   alignItems: 'center',
   color: isPositive ? '#16c784' : '#ea3943',
 }));
-
 const formatPrice = (price) => {
   return parseFloat(price).toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 };
-
 const IndexCell = styled(TableCell)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -94,7 +84,6 @@ const IndexCell = styled(TableCell)(({ theme }) => ({
   width: '50px',
   paddingRight: '0px',
 }));
-
 const StarButton = styled(Star)(({ theme, isFavorite }) => ({
   color: isFavorite ? '#ffc107' : '#c0c0c0',
   marginTop: '2px',
@@ -109,19 +98,26 @@ const CryptoList = () => {
   const [favorites, setFavorites] = useState([]);
   const [news, setNews] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showBuyForm, setShowBuyForm] = useState(false);
+  const [selectedCrypto, setSelectedCrypto] = useState(null);
 
+  const id = localStorage.getItem('userId')
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('https://api.coincap.io/v2/assets');
+        const cryptoData = response.data.data.map(crypto => ({
+          id: crypto.id,
+          name: crypto.name,
+          symbol: crypto.symbol,
+        }));
         setCryptoList(response.data.data);
 
         if (response.data.data.length > 0) {
           const symbols = response.data.data.map((crypto) => crypto.symbol);
           const response2 = await axios.get('https://min-api.cryptocompare.com/data/all/coinlist');
           const coinList = response2.data.Data;
-          console.log(coinList);
 
           const logos = symbols.reduce((acc, symbol) => {
             if (coinList[symbol] && coinList[symbol].ImageUrl) {
@@ -135,10 +131,34 @@ const CryptoList = () => {
       } catch (error) {
         console.log(error);
       }
+      
     };
 
     fetchData();
   }, []);
+
+  
+  // const buyCoin = (crypto) => {
+  //   axios.post(`http://localhost:8000/api/buycoin/${id}`, {
+  //     name: crypto.name,
+  //     symbol: crypto.symbol,
+  //     amount: 3,
+  //     currentPrice: crypto.priceUsd
+  //   })
+  //     .then(res => console.log(res))
+  //     .catch(err => console.log(err))
+  // }
+
+  const handleOpenBuyForm = (crypto) => {
+    setSelectedCrypto(crypto);
+    console.log(!crypto,"ddddd");
+    setShowBuyForm(true);
+  };
+
+  const handleCloseBuyForm = () => {
+    setShowBuyForm(false);
+  };
+
 
   const handleSort = (field) => {
     if (sortField === field) {
@@ -242,7 +262,7 @@ const CryptoList = () => {
                   <td><BoldText>{crypto.rank}</BoldText></td>
                   <CoinName>
                     {logoList[crypto.symbol] && <LogoImage src={logoList[crypto.symbol]} alt={crypto.name} />}
-                    <Link to={`/details/${crypto.symbol}`} className="link-unstyled">{crypto.name}</Link>
+                    <Link to={`/detail/${crypto.symbol}`} className="link-unstyled">{crypto.name}</Link>
                     <GreySymbol>({crypto.symbol})</GreySymbol>
                   </CoinName>
                   <td>
@@ -297,7 +317,7 @@ const CryptoList = () => {
                   <td><BoldText>{crypto.rank}</BoldText></td>
                   <CoinName>
                     {logoList[crypto.symbol] && <LogoImage src={logoList[crypto.symbol]} alt={crypto.name} />}
-                    <Link to={`/detail/${crypto.id}`} className="link-unstyled">{crypto.name}</Link>
+                    <Link to={`/detail/${crypto.symbol}`} className="link-unstyled">{crypto.name}</Link>
                     <GreySymbol>({crypto.symbol})</GreySymbol>
                   </CoinName>
                   <td>
@@ -319,30 +339,30 @@ const CryptoList = () => {
           </table>
         </Box>
         <Box margin={1}
-        bgcolor="#1d1d20"
-        color='#ffffff'
-        boxShadow={2}
-        width="calc(33% - 8px)"
-        height={250}
-        transition="box-shadow 0.3s"
-        sx={{
-          borderRadius: '50px',
-          background: '#1d1d20',
-          boxShadow: '20px 20px 60px #19191b, -20px -20px 60px #212125',
-          '&:hover': {
-            boxShadow: '0px 0px 5px 2px rgba(255, 255, 255, 0.3)',
-          },
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '16px',
-          backgroundColor: 'transparent',
-          border: 'none',
-          '& th, & td': {
-            borderBottom: 'none',
-          },
-        }}
+          bgcolor="#1d1d20"
+          color='#ffffff'
+          boxShadow={2}
+          width="calc(33% - 8px)"
+          height={250}
+          transition="box-shadow 0.3s"
+          sx={{
+            borderRadius: '50px',
+            background: '#1d1d20',
+            boxShadow: '20px 20px 60px #19191b, -20px -20px 60px #212125',
+            '&:hover': {
+              boxShadow: '0px 0px 5px 2px rgba(255, 255, 255, 0.3)',
+            },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '16px',
+            backgroundColor: 'transparent',
+            border: 'none',
+            '& th, & td': {
+              borderBottom: 'none',
+            },
+          }}
         >
           <News
           />
@@ -408,7 +428,7 @@ const CryptoList = () => {
                   <TableCell>
                     <CoinName style={{ color: 'white' }}>
                       {logoList[crypto.symbol] && <LogoImage src={logoList[crypto.symbol]} alt={crypto.name} />}
-                      <Link to={`/detail/${crypto.id}`} className="link-unstyled">{crypto.name}</Link>
+                      <Link to={`/detail/${crypto.symbol}`} className="link-unstyled">{crypto.name}</Link>
                       <GreySymbol>({crypto.symbol})</GreySymbol>
                     </CoinName>
                   </TableCell>
@@ -419,13 +439,26 @@ const CryptoList = () => {
                   <TableCell style={{ color: 'white' }} align="left">$ {formatPrice(crypto.priceUsd)}</TableCell>
                   <TableCell style={{ color: 'white' }} align="left">$ {formatPrice(crypto.volumeUsd24Hr)}</TableCell>
                   <TableCell style={{ color: 'white' }} align="left">$ {formatPrice(crypto.marketCapUsd)}</TableCell>
-                  <button className="buy">Buy</button>
+                  {/* <button className="buy" onClick={() =>buyCoin(crypto)}>Buy</button> *FLOGERT/}
+                  {/* <button className="buy" variant="contained" onClick={handleOpenBuyForm}>Buy</button> */}
+                  <button className="buy" variant="contained" onClick={() => handleOpenBuyForm(crypto)}>Buy</button>
+
+
                 </TableRow>
               );
             })}
           </TableBody>
         </TransparentTable>
       </CenteredTableContainer>
+      {selectedCrypto && <BuyForm crypto={selectedCrypto}  name={selectedCrypto.name}/>}
+      {/* <Dialog open={showBuyForm} onClose={handleCloseBuyForm}>
+        <DialogContent>
+          {selectedCrypto && <BuyForm crypto={selectedCrypto} />}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseBuyForm}>Cancel</Button>
+        </DialogActions>
+      </Dialog> */}
     </div>
   );
 };

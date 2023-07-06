@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { TextField, Button, Grid, Link, Typography, Container, Box, CssBaseline, IconButton, InputAdornment } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import CheckboxCrypto from './CheckboxCrypto';
-import AlphaBlockLogo from '../../img/alphablocknamevertical.png';
-import './InputWhiteText.css';
 import { styled } from '@mui/system';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import '../Register/InputWhiteText.css';
+import './InputWhiteText.css';
+import AlphaBlockLogo from '../../img/alphablocknameINVERTED.png';
 
 const WhiteIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.common.white,
@@ -29,10 +29,15 @@ const defaultTheme = createTheme({
     body2: {
       color: 'white',
     },
+    text: {
+      primary: '#ffffff',
+    },
   },
 });
 
+
 const Register = () => {
+  const { id } = useParams();
   const [personalID, setPersonalID] = useState('');
   const [photo, setPhoto] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -40,36 +45,58 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [validation, setValidation] = useState({});
+  const [validationErrors, setValidationErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
+
+  const userId = localStorage.getItem('userId')
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/user/` + userId)
+      .then((res) => {
+        setPersonalID(res.data.personalID);
+        setPhoto(res.data.photo);
+        setFirstName(res.data.firstName);
+        setLastName(res.data.lastName);
+        setEmail(res.data.email);
+        setPassword(res.data.password);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8000/api/register', {
-        personalID,
-        photo,
-        firstName,
-        lastName,
-        email,
-        password,
-        confirmPassword,
-      }, { withCredentials: true });
+      const response = await axios.post(
+        'http://localhost:8000/api/register',
+        {
+          personalID,
+          photo,
+          firstName,
+          lastName,
+          email,
+          password,
+          confirmPassword,
+        },
+        { withCredentials: true }
+      );
 
-     
       if (response.status === 200) {
-        console.log(response)
+        console.log(response);
         localStorage.setItem('userId', JSON.stringify(response.data.user._id));
-        navigate("/");
+        navigate('/');
+      }
+    } catch (error) {
+      console.log(error);
+      if (error.response && error.response.data && error.response.data.errors) {
+        setValidationErrors(error.response.data.errors);
+      } else {
+        setValidationErrors({});
+      }
     }
-}   catch (error) {
-    console.log(error)
-    setValidation(error)
-}
-};
+  };
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -92,6 +119,8 @@ const Register = () => {
               color: 'white',
             }}
           >
+            <img src={AlphaBlockLogo} alt="Logo" style={{ width: '50%', marginTop: '15%' }} />
+
             <Typography component="h1" variant="h5" sx={{ mt: 6 }}>
               Register
             </Typography>
@@ -101,23 +130,28 @@ const Register = () => {
                   <TextField
                     required
                     fullWidth
+                    value={personalID}
                     id="personalID"
                     label="Personal ID (NID)"
                     name="personal-id"
                     autoComplete="personal-id"
                     onChange={(e) => setPersonalID(e.target.value)}
+                    className="input-white-text"
                     InputProps={{
                       classes: {
-                        input: 'white-text',
+                        input: 'white-input',
                       },
                     }}
                   />
-                  {validation.personalID ? validation.personalID.message : ''}
-                </Grid>
+                  {validationErrors.personalID && (
+                    <p className="text-danger">{validationErrors.personalID.message}</p>
+                  )}                
+                  </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     required
                     fullWidth
+                    value={photo}
                     id="photo"
                     label="Photo"
                     name="photo"
@@ -129,12 +163,16 @@ const Register = () => {
                     }}
                     onChange={(e) => setPhoto(e.target.value)}
                   />
+                  {validationErrors.photo && (
+                    <p className="text-danger">{validationErrors.photo.message}</p>
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     autoComplete="given-name"
                     name="first-name"
                     required
+                    value={firstName}
                     fullWidth
                     id="first-name"
                     label="First Name"
@@ -146,12 +184,15 @@ const Register = () => {
                     }}
                     onChange={(e) => setFirstName(e.target.value)}
                   />
-                  {validation.firstName ? validation.firstName.message : ''}
+                  {validationErrors.firstName && (
+                    <p className="text-danger">{validationErrors.firstName.message}</p>
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     required
                     fullWidth
+                    value={lastName}
                     id="last-name"
                     label="Last Name"
                     name="last-name"
@@ -163,12 +204,15 @@ const Register = () => {
                     }}
                     onChange={(e) => setLastName(e.target.value)}
                   />
-                  {validation.lastName ? validation.lastName.message : ''}
+                  {validationErrors.lastName && (
+                    <p className="text-danger">{validationErrors.lastName.message}</p>
+                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
+                    value={email}
                     id="email"
                     label="Email Address"
                     name="email"
@@ -180,12 +224,15 @@ const Register = () => {
                     }}
                     onChange={(e) => setEmail(e.target.value)}
                   />
-                  {validation.email ? validation.email.message : ''}
-                </Grid>
+                  {validationErrors.email && (
+                    <p className="text-danger">{validationErrors.email.message}</p>
+                  )}                
+                  </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
+                    value={password}
                     name="password"
                     label="Password"
                     type={showPassword ? 'text' : 'password'}
@@ -204,18 +251,21 @@ const Register = () => {
                           >
                             {showPassword ? <VisibilityOff /> : <Visibility />}
                           </WhiteIconButton>
-                          
+
                         </InputAdornment>
                       ),
                     }}
                     onChange={(e) => setPassword(e.target.value)}
                   />
-                  {validation.password ? validation.password.message : ''}
-                </Grid>
+                  {validationErrors.password && (
+                    <p className="text-danger">{validationErrors.password.message}</p>
+                  )}                            
+                  </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
+                    value={confirmPassword}
                     name="confirmpassword"
                     label="Confirm Password"
                     type={showConfirmPassword ? 'text' : 'password'}
@@ -229,7 +279,7 @@ const Register = () => {
                         <InputAdornment position="end">
                           <WhiteIconButton
                             onClick={toggleShowConfirmPassword}
-                            color= 'white'
+                            color='white'
                             onMouseDown={(e) => e.preventDefault()}
                             edge="end"
                           >
@@ -240,8 +290,10 @@ const Register = () => {
                     }}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
-                  {validation.confirmPassword ? validation.confirmPassword.message : ''}
-                </Grid>
+                  {validationErrors.confirmPassword && (
+                    <p className="text-danger">{validationErrors.confirmPassword.message}</p>
+                  )}                  
+                  </Grid>
                 <Grid item xs={12}>
                 </Grid>
               </Grid>

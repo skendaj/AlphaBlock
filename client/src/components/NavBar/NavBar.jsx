@@ -4,6 +4,8 @@ import { styled } from '@mui/system';
 import { AppBar, Toolbar, Button, Menu, MenuItem, Avatar } from '@mui/material';
 import LogoImage from '../../img/alphablockINVERTED.png';
 import AvatarImage from '../../img/avatar.png';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const TransparentAppBar = styled(AppBar)({
   background: 'transparent',
@@ -27,6 +29,7 @@ const ProfileButton = styled(Button)({
 
 const ProfileMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,6 +39,16 @@ const ProfileMenu = () => {
     setAnchorEl(null);
   };
 
+  const logOut = () => {
+    console.log('logging out');
+    axios
+        .post('http://localhost:8000/api/logout', {}, { withCredentials: 'same-origin' })
+        .then((e) => {
+            localStorage.removeItem('userId');
+            navigate('/login');
+        });
+};
+
   return (
     <>
       <ProfileButton color="inherit" onClick={handleClick}>
@@ -43,7 +56,7 @@ const ProfileMenu = () => {
       </ProfileButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem onClick={handleClose}>Edit Profile</MenuItem>
-        <MenuItem onClick={handleClose}>Log Out</MenuItem>
+        <MenuItem onClick={logOut}>Log Out</MenuItem>
       </Menu>
     </>
   );
@@ -63,9 +76,9 @@ const NavigationBar = () => {
           <Button color="inherit" component={Link} to="/exchanges" underline="none">
             Exchanges
           </Button>
-          <Button color="inherit" component={Link} to="/transfers" underline="none">
+          {/* <Button color="inherit" component={Link} to="/transfers" underline="none">
             Transfers
-          </Button>
+          </Button> */}
           <Button color="inherit" component={Link} to="/portfolio" underline="none">
             Portfolio
           </Button>

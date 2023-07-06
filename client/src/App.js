@@ -10,38 +10,38 @@ import Main from './views/Main';
 import Exchange from './views/Exchange';
 import Details from './views/Details';
 
-import Portfolio from './components/Portfolio/Portfolio';
-
 import Authenticate from './views/Authenticate';
 
 function App() {
   
   const userId = localStorage.getItem('userId')
-  const [role, setRole] = useState("")
+  const [admin, setAdmin] = useState(false)
   const [refresh, setRefresh] = useState()
 
   useEffect(() => {
     userId?
     axios.get('http://localhost:8000/api/user/' + userId)
-      .then(res => { setRole(res.data.role) })
+    
+      .then(res => { 
+        console.log(res.data.admin);
+        setAdmin(res.data.admin) })
       .catch(err => console.log(err)) : console.log("errors")
   }, [refresh])
 
   return (
-    <BrowserRouter>
     <div className="App">
-        <Routes>
-          {/* <Route path="/" element={<Navigate to="/auth" />} />
-          <Route path='/auth' element={<Authenticate {...{setRefresh}}/>} /> */}
-          <Route path="/" element={<Main  />} />
-          <Route path="/exchanges/" element={<Exchange  />} />
-          <Route path="/details/:symbol" element={<Details  />} />
-          <Route path="/portfolio" element={<Portfolio  />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
+      <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Main  />} />
+        <Route path="/login" element={<Login/>}></Route>
+        <Route path="/register" element={<Register/>}></Route>
+        <Route path="/exchanges/" element={<Exchange  />} />
+        <Route path="/detail/:symbol" element={<Details  />} />
+        {/* <Route path="/portfolio" element={<Portfolio  />} /> */}
+        <Route path="/login" element={<Login />} />
+       </Routes>
+      </BrowserRouter>
     </div>
-    </BrowserRouter>
   );
 }
 

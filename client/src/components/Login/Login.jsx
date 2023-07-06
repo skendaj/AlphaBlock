@@ -14,8 +14,10 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import './InputWhiteText.css';
 import { styled } from '@mui/system';
+import './InputWhiteText.css';
+import AlphaBlockLogo from '../../img/alphablocknameverticalINVERTED.png';
+
 
 const defaultTheme = createTheme({
   palette: {
@@ -30,6 +32,9 @@ const defaultTheme = createTheme({
     body2: {
       color: 'white',
     },
+    text: {
+      primary: '#ffffff',
+    },
   },
 });
 
@@ -39,6 +44,8 @@ const Login = ({ setRefresh }) => {
   const [password, setPassword] = useState('');
   const [validation, setValidation] = useState({});
   const [show, setShow] = useState(false);
+  const [autoplay, setAutoplay] = useState(true);
+
 
   const showPass = (e) => {
     setShow(!show);
@@ -58,9 +65,10 @@ const Login = ({ setRefresh }) => {
       );
 
       if (response.status === 200) {
-        console.log(response);
-        localStorage.setItem('userId', response.data.user._id);
-        setRefresh(Math.random());
+        console.log(response.data);
+        const id= await response
+        localStorage.setItem('userId',response.data._id );
+        // setRefresh(Math.random());
         navigate('/');
       }
     } catch (error) {
@@ -71,37 +79,48 @@ const Login = ({ setRefresh }) => {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" maxWidth="xs" sx={{ height: '100vh' }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundColor: '#1d1d20',
-            height: "70%",
-            backgroundImage:
-              'url(https://images.unsplash.com/photo-1639762681485-074b7f938ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1332&q=80)',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Box
-            sx={{
-              mx: "auto",
-              maxWidth: "100%",
-              height: "100%",
-              backgroundColor: '#1d1d20',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              color: 'white',
-            }}
-          >
-            <Typography component="h1" variant="h5">
+  <Grid container component="main" maxWidth="xs" sx={{ height: '100vh' }}>
+    <CssBaseline />
+    <Grid
+  item
+  xs={false}
+  sm={4}
+  md={7}
+  sx={{
+    backgroundColor: '#1d1d20',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }}
+>
+  <img
+    src="https://i.giphy.com/media/W5UoBN0YMdT1QP8Yfr/giphy.webp"
+    alt="GIF"
+    style={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+    }}
+  />
+</Grid>
+    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Box
+        sx={{
+          mx: "auto",
+          maxWidth: "100%",
+          height: "100%",
+          backgroundColor: '#1d1d20',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          color: 'white',
+        }}
+      >
+                <img src={AlphaBlockLogo} alt="Logo" style={{ width: '18%', marginTop: '15%' }} />
+
+            <Typography component="h1" variant="h5" sx={{
+              marginTop: '15%'}}>
               Sign In
             </Typography>
             <Box component="form" sx={{ mt: 1, width: "80%", }}>
@@ -139,11 +158,11 @@ const Login = ({ setRefresh }) => {
                 onChange={(e) => setPassword(e.target.value)}
               />
               {validation.password ? validation.password.message : ""}
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              /> */}
+              <Button type="submit" fullWidth variant="contained" onClick={handleLogin} sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
               <Grid container>
