@@ -20,6 +20,10 @@ import '../CryptoList/CryptoList.css';
 import News from "../../components/News/News";
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import BuyForm from "../../components/BuyForm/BuyForm";
+import CryptoDetails from "../../components/CryptoDetails/CryptoDetails";
+
+import CryptoDialog from "../CryptoDetails/CryptoDialog"
+
 
 const TransparentTable = styled(Table)({
   backgroundColor: 'transparent',
@@ -428,7 +432,8 @@ const CryptoList = () => {
                   <TableCell>
                     <CoinName style={{ color: 'white' }}>
                       {logoList[crypto.symbol] && <LogoImage src={logoList[crypto.symbol]} alt={crypto.name} />}
-                      <Link to={`/detail/${crypto.symbol}`} className="link-unstyled">{crypto.name}</Link>
+                      {/* <Link to={`/detail/${crypto.symbol}`} className="link-unstyled">{crypto.name}</Link> */}
+                      <CryptoDialog cryptoName={crypto.name}  cryptoSymbol={crypto.symbol}/>
                       <GreySymbol>({crypto.symbol})</GreySymbol>
                     </CoinName>
                   </TableCell>
@@ -451,6 +456,8 @@ const CryptoList = () => {
         </TransparentTable>
       </CenteredTableContainer>
       {selectedCrypto && <BuyForm crypto={selectedCrypto}  name={selectedCrypto.name}/>}
+      {/* {cryptoList.length > 0 && <CryptoDetails data={cryptoList.symbol} />} */}
+
       {/* <Dialog open={showBuyForm} onClose={handleCloseBuyForm}>
         <DialogContent>
           {selectedCrypto && <BuyForm crypto={selectedCrypto} />}

@@ -2,12 +2,14 @@ import React, { useEffect, useRef } from 'react';
 
 let tvScriptLoadingPromise;
 
-export default function TradingViewWidget() {
+export default function TradingViewWidget({ cryptoSymbol }) {
   const onLoadScriptRef = useRef();
 
   useEffect(
     () => {
       onLoadScriptRef.current = createWidget;
+
+      console.log(cryptoSymbol, "cryptoSymbolcryptoSymbolcryptoSymbol");
 
       if (!tvScriptLoadingPromise) {
         tvScriptLoadingPromise = new Promise((resolve) => {
@@ -25,11 +27,15 @@ export default function TradingViewWidget() {
 
       return () => onLoadScriptRef.current = null;
 
+
+
       function createWidget() {
+        var binance = "BINANCE:"
         if (document.getElementById('tradingview_08790') && 'TradingView' in window) {
           new window.TradingView.widget({
             autosize: true,
-            symbol: "BINANCE:BTCUSDT",
+            // symbol: `BINANCE:${cryptoSymbol == "USDT" ? "" : cryptoSymbol}USDT`,
+            symbol: `${cryptoSymbol == "USDT" ? "CRYPTOCAP:" + cryptoSymbol : "BINANCE:" + cryptoSymbol + "USDT"}`,
             interval: "D",
             timezone: "Europe/Amsterdam",
             theme: "dark",
@@ -49,7 +55,7 @@ export default function TradingViewWidget() {
 
   return (
     <div className='tradingview-widget-container' >
-      <div id='tradingview_08790' style={{ marginLeft:"5%" ,width: '90%' ,height: '640px' }}/>
+      <div id='tradingview_08790' style={{ marginLeft: "5%", width: '90%', height: '640px' }} />
     </div>
   );
 }
