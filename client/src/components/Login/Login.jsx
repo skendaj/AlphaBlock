@@ -66,8 +66,7 @@ const Login = ({ setRefresh }) => {
 
       if (response.status === 200) {
         console.log(response.data);
-        const id= await response
-        localStorage.setItem('userId',response.data._id );
+        localStorage.setItem('userId', response.data._id);
         // setRefresh(Math.random());
         navigate('/');
       }
@@ -79,48 +78,49 @@ const Login = ({ setRefresh }) => {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-  <Grid container component="main" maxWidth="xs" sx={{ height: '100vh' }}>
-    <CssBaseline />
-    <Grid
-  item
-  xs={false}
-  sm={4}
-  md={7}
-  sx={{
-    backgroundColor: '#1d1d20',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }}
->
-  <img
-    src="https://i.giphy.com/media/W5UoBN0YMdT1QP8Yfr/giphy.webp"
-    alt="GIF"
-    style={{
-      width: '100%',
-      height: '100%',
-      objectFit: 'cover',
-    }}
-  />
-</Grid>
-    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-      <Box
-        sx={{
-          mx: "auto",
-          maxWidth: "100%",
-          height: "100%",
-          backgroundColor: '#1d1d20',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          color: 'white',
-        }}
-      >
-                <img src={AlphaBlockLogo} alt="Logo" style={{ width: '18%', marginTop: '15%' }} />
+      <Grid container component="main" maxWidth="xs" sx={{ height: '100vh' }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundColor: '#1d1d20',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <img
+            src="https://i.giphy.com/media/W5UoBN0YMdT1QP8Yfr/giphy.webp"
+            alt="GIF"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              mx: "auto",
+              maxWidth: "100%",
+              height: "100%",
+              backgroundColor: '#1d1d20',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              color: 'white',
+            }}
+          >
+            <img src={AlphaBlockLogo} alt="Logo" style={{ width: '18%', marginTop: '15%' }} />
 
             <Typography component="h1" variant="h5" sx={{
-              marginTop: '15%'}}>
+              marginTop: '15%'
+            }}>
               Sign In
             </Typography>
             <Box component="form" sx={{ mt: 1, width: "80%", }}>
@@ -133,10 +133,10 @@ const Login = ({ setRefresh }) => {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                InputLabelProps={{ style: { color: 'white' } }}
                 InputProps={{
-                  classes: {
-                    input: 'white-text',
-                  },
+                  style: { color: 'white' },
+                  sx: { '&::placeholder': { color: 'white' } }
                 }}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -150,10 +150,10 @@ const Login = ({ setRefresh }) => {
                 type={show ? 'text' : 'password'}
                 id="password"
                 autoComplete="current-password"
+                InputLabelProps={{ style: { color: 'white' } }}
                 InputProps={{
-                  classes: {
-                    input: 'white-text',
-                  },
+                  style: { color: 'white' },
+                  sx: { '&::placeholder': { color: 'white' } }
                 }}
                 onChange={(e) => setPassword(e.target.value)}
               />

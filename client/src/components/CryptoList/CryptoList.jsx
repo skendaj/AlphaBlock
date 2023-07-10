@@ -21,7 +21,6 @@ import News from "../../components/News/News";
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import BuyForm from "../../components/BuyForm/BuyForm";
 import CryptoDetails from "../../components/CryptoDetails/CryptoDetails";
-
 import CryptoDialog from "../CryptoDetails/CryptoDialog"
 
 
@@ -321,7 +320,7 @@ const CryptoList = () => {
                   <td><BoldText>{crypto.rank}</BoldText></td>
                   <CoinName>
                     {logoList[crypto.symbol] && <LogoImage src={logoList[crypto.symbol]} alt={crypto.name} />}
-                    <Link to={`/detail/${crypto.symbol}`} className="link-unstyled">{crypto.name}</Link>
+                    <CryptoDialog cryptoName={crypto.name}  cryptoSymbol={crypto.symbol}/>
                     <GreySymbol>({crypto.symbol})</GreySymbol>
                   </CoinName>
                   <td>

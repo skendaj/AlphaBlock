@@ -118,7 +118,7 @@ const BuyForm = ({ crypto, name }) => {
                         Cancel
                     </Button>
                     <Button onClick={buyCoin} color="primary">
-                        Submit
+                        Buy
                     </Button>
                 </DialogActions>
             </Dialog>

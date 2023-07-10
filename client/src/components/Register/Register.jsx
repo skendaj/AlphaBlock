@@ -70,7 +70,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/register',
+        `http://localhost:8000/api/register`,
         {
           personalID,
           photo,
@@ -137,10 +137,10 @@ const Register = () => {
                     autoComplete="personal-id"
                     onChange={(e) => setPersonalID(e.target.value)}
                     className="input-white-text"
+                    InputLabelProps={{ style: { color: 'white' } }}
                     InputProps={{
-                      classes: {
-                        input: 'white-input',
-                      },
+                      style: { color: 'white' },
+                      sx: { '&::placeholder': { color: 'white' } }
                     }}
                   />
                   {validationErrors.personalID && (
@@ -156,10 +156,10 @@ const Register = () => {
                     label="Photo"
                     name="photo"
                     autoComplete="photo"
+                    InputLabelProps={{ style: { color: 'white' } }}
                     InputProps={{
-                      classes: {
-                        input: 'white-text',
-                      },
+                      style: { color: 'white' },
+                      sx: { '&::placeholder': { color: 'white' } }
                     }}
                     onChange={(e) => setPhoto(e.target.value)}
                   />
@@ -177,10 +177,10 @@ const Register = () => {
                     id="first-name"
                     label="First Name"
                     autoFocus
+                    InputLabelProps={{ style: { color: 'white' } }}
                     InputProps={{
-                      classes: {
-                        input: 'white-text',
-                      },
+                      style: { color: 'white' },
+                      sx: { '&::placeholder': { color: 'white' } }
                     }}
                     onChange={(e) => setFirstName(e.target.value)}
                   />
@@ -197,10 +197,10 @@ const Register = () => {
                     label="Last Name"
                     name="last-name"
                     autoComplete="family-name"
+                    InputLabelProps={{ style: { color: 'white' } }}
                     InputProps={{
-                      classes: {
-                        input: 'white-text',
-                      },
+                      style: { color: 'white' },
+                      sx: { '&::placeholder': { color: 'white' } }
                     }}
                     onChange={(e) => setLastName(e.target.value)}
                   />
@@ -217,10 +217,10 @@ const Register = () => {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    InputLabelProps={{ style: { color: 'white' } }}
                     InputProps={{
-                      classes: {
-                        input: 'white-text',
-                      },
+                      style: { color: 'white' },
+                      sx: { '&::placeholder': { color: 'white' } }
                     }}
                     onChange={(e) => setEmail(e.target.value)}
                   />
@@ -238,6 +238,7 @@ const Register = () => {
                     type={showPassword ? 'text' : 'password'}
                     id="password"
                     autoComplete="new-password"
+                    InputLabelProps={{ style: { color: 'white' } }}
                     InputProps={{
                       classes: {
                         input: 'white-text',

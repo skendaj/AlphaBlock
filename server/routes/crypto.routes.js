@@ -9,4 +9,5 @@ module.exports = (app) => {
     app.patch('/api/user/edit/:id', UserController.updateUser);
     app.delete('/api/user/:id', UserController.deleteUser);
     app.post("/api/buycoin/:id", UserController.buyCoin);
+    app.patch("/api/sellcoin/:id", UserController.sellCoin);
 }

@@ -3,6 +3,35 @@ const Coin = require("../models/coin.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+
+module.exports.sellCoin = (req, res) => {
+  const userId = req.params.id;
+  console.log(userId);
+  console.log(req.body);
+  const { amount, totalPrice } = req.body.coins[0];
+
+  if ( !amount || !totalPrice) {
+    return res.status(400).json({ message: 'Invalid sell coin data' });
+  }
+  const userData = {
+    amount: amount,
+    totalPrice: totalPrice,
+  };
+  console.log(userData)
+      Coin.findOneAndUpdate(
+        { _id: userId },
+        userData,
+        { new: true, runValidators: true }
+      )
+        .then((user) => {
+          return res.json(user);
+        })
+        .catch((err) => {
+          console.log('Error updating user:', err);
+          res.status(500).json({ message: 'Something went wrong', error: err });
+        });
+}; 
+
 module.exports.buyCoin = (req, res) => {
   console.log(req.body);
   const usrId = req.params.id;
@@ -15,7 +44,15 @@ module.exports.buyCoin = (req, res) => {
 
   const coinData = req.body.coins[0];
 
-  Coin.create(coinData)
+  Coin.findOne({ name: coinData.name })
+  .then((coin) => {
+    if (coin) {
+      coin.amount += parseFloat(coinData.amount);
+      return coin.save();
+      
+      console.log('Coin exists:', coin);
+    } else {
+      Coin.create(coinData)
     .then((coin) => {
       const coinData2 = coin._id;
 
@@ -43,6 +80,15 @@ module.exports.buyCoin = (req, res) => {
       console.log(err);
       res.json({ message: "Something coin went wrong", error: err });
     });
+      console.log('Coin does not exist');
+    }
+  })
+  .then((knp)=> {
+    return res.json("test");
+  })
+  .catch((error) => {
+    console.log('Error occurred while checking coin:', error);
+  });
 };
 
 
@@ -123,9 +169,23 @@ module.exports.findAllUsers = (req, res) => {
     });
 };
 
+// module.exports.getUser = (request, response) => {
+//   User.findOne({ _id: request.params.id })
+//   console.log(request.params.id)
+//   .populate('coins')
+//     .then((user) => {
+//       if (!user) {
+//         return response.status(400).json({ error: "User not found" });
+//       } else {
+//         response.json(user);
+//       }
+//     })
+//     .catch((err) => response.json(err));
+// };
 module.exports.getUser = (request, response) => {
+  // populate ben errror
   User.findOne({ _id: request.params.id })
-  .populate('coins')
+    .populate('coins')
     .then((user) => {
       if (!user) {
         return response.status(400).json({ error: "User not found" });
@@ -137,17 +197,10 @@ module.exports.getUser = (request, response) => {
 };
 
 module.exports.updateUser = (request, response) => {
-  User.exists({ email: request.body.email })
-    .then((emailExists) => {
-      if (emailExists) {
-        return Promise.reject({
-          errors: { email: { message: "This email already has an account" } },
-        });
-      }
-      return User.findOneAndUpdate({ _id: request.params.id }, request.body, {
-        new: true,
-      });
-    })
+  User.findOneAndUpdate(request.params.id,
+    { $set: request.body},
+    { new: true}
+    )
     .then((updatedUser) => response.json(updatedUser))
     .catch((err) => response.status(500).json(err));
 };

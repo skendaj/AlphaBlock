@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema(
     // },
     coins: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'coin'
+        ref: 'Coin'
     }],
     admin: {
       type: Boolean,

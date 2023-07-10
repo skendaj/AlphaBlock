@@ -48,6 +48,10 @@ const ProfileMenu = () => {
             navigate('/login');
         });
 };
+const editProfile = () => {
+  console.log('edit profile');
+          navigate('/account/edit/');
+};
 
   return (
     <>
@@ -55,7 +59,7 @@ const ProfileMenu = () => {
         <Avatar src={AvatarImage} alt="Avatar" sx={{ marginRight: '8px' }} />
       </ProfileButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={handleClose}>Edit Profile</MenuItem>
+        <MenuItem onClick={editProfile}>Edit Profile</MenuItem>
         <MenuItem onClick={logOut}>Log Out</MenuItem>
       </Menu>
     </>
