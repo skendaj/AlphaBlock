@@ -25,7 +25,7 @@ export default function ResponsiveDialog({ cryptoName, cryptoSymbol }) {
 
     return (
         <div>
-            <Button variant="text" onClick={handleClickOpen}>
+            <Button variant="text" color="inherit"sx={{color: 'white',}} onClick={handleClickOpen}>
                 {cryptoName}
             </Button>
             <Dialog
@@ -34,7 +34,7 @@ export default function ResponsiveDialog({ cryptoName, cryptoSymbol }) {
                 maxWidth="lg"
                 aria-labelledby="responsive-dialog-title"
             >
-                <DialogContent sx={{ maxWidth: 1200, minWidth: 900, bgcolor: "#14171b" }}>
+                <DialogContent sx={{ maxWidth: 1200, minWidth: 900, bgcolor: "#14171b", color: "white" }}>
                     <CryptoDetails cryptoSymbol={cryptoSymbol} />
                 </DialogContent>
             </Dialog>

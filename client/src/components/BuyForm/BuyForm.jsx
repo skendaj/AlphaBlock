@@ -93,6 +93,11 @@ const BuyForm = ({ crypto, name }) => {
                             onChange={handleCryptoAmountChange}
                             fullWidth
                             margin="normal"
+                            InputLabelProps={{ style: { color: 'white' } }}
+                            InputProps={{
+                                style: { color: 'white' },
+                                sx: { '&::placeholder': { color: 'white' } }
+                            }}
                         />
                         <TextField
                             label="USD Value"
@@ -100,6 +105,11 @@ const BuyForm = ({ crypto, name }) => {
                             onChange={handleUsdValueChange}
                             fullWidth
                             margin="normal"
+                            InputLabelProps={{ style: { color: 'white' } }}
+                            InputProps={{
+                                style: { color: 'white' },
+                                sx: { '&::placeholder': { color: 'white' } }
+                            }}
                         />
                     </form>
                 </DialogContent>
