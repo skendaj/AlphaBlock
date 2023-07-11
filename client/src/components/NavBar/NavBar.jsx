@@ -86,9 +86,9 @@ const NavigationBar = () => {
           <Button color="inherit" component={Link} to="/portfolio" underline="none">
             Portfolio
           </Button>
-          <Button color="inherit" component={Link} to="/favourites" underline="none">
+          {/* <Button color="inherit" component={Link} to="/favourites" underline="none">
             Favourites
-          </Button>
+          </Button> */}
           <ProfileMenu />
           </Toolbar>
       </div>

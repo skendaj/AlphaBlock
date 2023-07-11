@@ -69,8 +69,7 @@ const EditProfile = () => {
             photo,
             firstName,
             lastName,
-            email,
-            password
+            email
         })
             .then((res) => {
                 console.log(res);

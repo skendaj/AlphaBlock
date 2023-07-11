@@ -4,10 +4,7 @@ import { TextField, Button, Grid, Link, Typography, Container, Box, CssBaseline,
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import CheckboxCrypto from './CheckboxCrypto';
 import { styled } from '@mui/system';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import '../Register/InputWhiteText.css';
 import './InputWhiteText.css';
 import AlphaBlockLogo from '../../img/alphablocknameINVERTED.png';
@@ -85,7 +82,7 @@ const Register = () => {
 
       if (response.status === 200) {
         console.log(response);
-        localStorage.setItem('userId', JSON.stringify(response.data.user._id));
+        localStorage.setItem('userId', response.data.user._id);
         navigate('/');
       }
     } catch (error) {

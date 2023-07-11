@@ -12,9 +12,6 @@ import Details from './views/Details';
 import EditProfile from './components/EditProfile/EditProfile';
 import Portfolio from './views/Portfolio';
 
-
-import Authenticate from './views/Authenticate';
-
 function App() {
   
   const userId = localStorage.getItem('userId')

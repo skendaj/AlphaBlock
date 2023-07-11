@@ -130,9 +130,13 @@ const Portfolio = () => {
                 });
                 const cryptoData = Array.from(cryptoDataMap.values());
                 setPortfolio(cryptoData);
+                
             })
             .catch((err) => console.log(err));
     }, []);
+
+        // Calculate the sum of all crypto total prices
+        const totalValue = portfolio.reduce((total, crypto) => total + crypto.totalPrice, 0);
 
     return (
         <div className="component-container">
@@ -146,6 +150,7 @@ const Portfolio = () => {
                             background: '#1d1d20',
                             boxShadow: '20px 20px 60px #19191b, -20px -20px 60px #212125',
                             bgcolor: "#2a3038",
+                            textAlign: "center",
                             minWidth: 650,
                             '& tbody tr': {
                                 '&:hover': {
@@ -154,31 +159,33 @@ const Portfolio = () => {
                             },
                         }}
                         aria-label="simple table">
-                        <TableHead>
+                        <TableHead sx={{                            
+                            marginLeft: '30px',
+                            }}>
                             <TableRow>
-                                <TableCell onClick={() => handleSort('name')}>
+                                <TableCell align="center" onClick={() => handleSort('name')}>
                                     <BoldText style={{ color: 'white' }}>Name</BoldText>
                                     {sortField === 'name' && (sortOrder === 'asc' ? ' ▲' : ' ▼')}
                                 </TableCell>
-                                <TableCell align="left" onClick={() => handleSort('amount')}>
+                                <TableCell align="center" onClick={() => handleSort('amount')}>
                                     <BoldText style={{ color: 'white' }}>Amount</BoldText>
                                     {sortField === 'amount' && (sortOrder === 'asc' ? ' ▲' : ' ▼')}
                                 </TableCell>
-                                <TableCell align="left" onClick={() => handleSort('totalPrice')}>
+                                <TableCell align="right" onClick={() => handleSort('totalPrice')}>
                                     <BoldText style={{ color: 'white' }}>Total Price</BoldText>
-                                    {sortField === 'prictotalPriceeUsd' && (sortOrder === 'asc' ? ' ▲' : ' ▼')}
+                                    {sortField === 'totalPrice' && (sortOrder === 'asc' ? ' ▲' : ' ▼')}
                                 </TableCell>
                                 <TableCell>
-                                    <BoldText style={{ color: 'white' }}>Action</BoldText>
+                                    <BoldText align="right" style={{ color: 'white' }}>&nbsp;&nbsp;&nbsp;&nbsp;Action</BoldText>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {portfolio.map((crypto, index) => (
                                 <TableRow key={index}>
-                                    <TableCell style={{ color: 'white' }} align="left">{crypto.name}</TableCell>
-                                    <TableCell style={{ color: 'white' }} align="left">{formatPrice(crypto.amount)}</TableCell>
-                                    <TableCell style={{ color: 'white' }} align="left">$ {formatPrice(crypto.totalPrice)}</TableCell>
+                                    <TableCell style={{ color: 'white' }} align="center">{crypto.name}</TableCell>
+                                    <TableCell style={{ color: 'white' }} align="center">{formatPrice(crypto.amount)}</TableCell>
+                                    <TableCell style={{ color: 'white' }} align="right">$ {formatPrice(crypto.totalPrice)}</TableCell>
                                     <TableCell>
                                         {/* <Button
                                             variant="contained"
@@ -187,10 +194,17 @@ const Portfolio = () => {
                                         >
                                             Sell
                                         </Button> */}
-                                        <button className="buy" variant="contained" onClick={() => handleOpenSellForm(crypto)}>Sell</button>
+                                        <button className="buy" variant="contained" align="right" onClick={() => handleOpenSellForm(crypto)}>Sell</button>
                                     </TableCell>
                                 </TableRow>
                             ))}
+                             {/* Add a new row to display the sum of all crypto total prices */}
+                             <TableRow>
+                                <TableCell />
+                                <TableCell />
+                                <TableCell style={{ color: 'white', fontWeight: 'bold' }} align="right">Total $ {formatPrice(totalValue)}</TableCell>
+                                <TableCell />
+                            </TableRow>
                         </TableBody>
                     </TransparentTable>
                 </CenteredTableContainer>

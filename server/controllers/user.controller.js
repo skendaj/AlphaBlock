@@ -192,13 +192,13 @@ module.exports.getUser = (request, response) => {
     .catch((err) => response.json(err));
 };
 
+
 module.exports.updateUser = (request, response) => {
-  User.findOneAndUpdate(request.params.id,
-    { $set: request.body},
-    { new: true}
-    )
-    .then((updatedUser) => response.json(updatedUser))
-    .catch((err) => response.status(500).json(err));
+  User.findOneAndUpdate({ _id: request.params.id }, request.body, {
+       new: true,
+     })
+   .then((updatedUser) => response.json(updatedUser))
+   .catch((err) => response.status(500).json(err));
 };
 
 module.exports.deleteUser = (request, response) => {

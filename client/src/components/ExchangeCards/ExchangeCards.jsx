@@ -66,7 +66,7 @@ const FlippableBox = ({ front, back, imageUrl, exchange }) => {
     setIsFlipped(!isFlipped);
   };
 
-  console.log(exchange);
+  // console.log(exchange);
 
   return (
     <>
@@ -153,7 +153,7 @@ const FlippableBox = ({ front, back, imageUrl, exchange }) => {
               <div>Volume: $ {formatPrice(exchange.volumeUsd)}</div>
               <div>Percentage: {parseFloat(exchange.percentTotalVolume).toFixed(2)}%</div>
               <div>Trading Pairs: {exchange.tradingPairs}</div>
-              <div><a href="{exchange.exchangeUrl}" target='_blank' >{exchange.exchangeUrl}</a></div>
+              <div><Link to={exchange.exchangeUrl} target='_blank' >{exchange.exchangeUrl}</Link></div>
             </div>
           </div>
         </div>
@@ -171,10 +171,11 @@ const CardGrid2 = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('https://api.coincap.io/v2/exchanges');
+        console.log(response.data.data[0].exchangeUrl)
         setExchanges(response.data.data);
-        console.log()
+        // console.log()
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
