@@ -17,6 +17,7 @@ AlphaBlock is a powerful MERN Stack (MongoDB, Express.js, React.js, Node.js) app
 Please note that AlphaBlock is currently under development, and additional features and improvements will be added in future updates.
 
 ![AlphaBlock Screenshot](screenshot.png)
+![AlphaBlock Screenshot2](screenshot2.png)
 
 ## Installation
 
