@@ -102,6 +102,7 @@ const CryptoList = () => {
   const [news, setNews] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showBuyForm, setShowBuyForm] = useState(false);
+  const [open, setOpen] = useState(true);
   const [selectedCrypto, setSelectedCrypto] = useState(null);
 
   const id = localStorage.getItem('userId')
@@ -155,6 +156,7 @@ const CryptoList = () => {
   const handleOpenBuyForm = (crypto) => {
     setSelectedCrypto(crypto);
     console.log(!crypto,"ddddd");
+    setOpen(true)
     setShowBuyForm(true);
   };
 
@@ -454,7 +456,7 @@ const CryptoList = () => {
           </TableBody>
         </TransparentTable>
       </CenteredTableContainer>
-      {selectedCrypto && <BuyForm crypto={selectedCrypto}  name={selectedCrypto.name}/>}
+      {selectedCrypto && <BuyForm crypto={selectedCrypto}  name={selectedCrypto.name} setOpen={setOpen} open={open} setSelectedCrypto= {setSelectedCrypto}/>}
       {/* {cryptoList.length > 0 && <CryptoDetails data={cryptoList.symbol} />} */}
 
       {/* <Dialog open={showBuyForm} onClose={handleCloseBuyForm}>

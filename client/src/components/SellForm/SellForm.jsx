@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 
-const SellForm = ({ crypto, name, amount, totalPrice }) => {
-  const [open, setOpen] = useState(true);
+const SellForm = ({ crypto, name, amount, totalPrice, setOpen, open, setSelectedCrypto }) => {
+  // const [open, setOpen] = useState(true);
   const [cryptoAmount, setCryptoAmount] = useState('');
   const [usdValue, setUsdValue] = useState('');
   const [priceUsd, setPriceUsd] = useState(0);
@@ -15,11 +15,14 @@ const SellForm = ({ crypto, name, amount, totalPrice }) => {
 
   const handleOpen = () => {
     setOpen(true);
-  };
+};
 
-  const handleClose = () => {
+const handleClose = () => {
     setOpen(false);
-  };
+    setSelectedCrypto(null);
+    setCryptoAmount("");
+    setUsdValue("");
+};
 
   const handleCryptoAmountChange = (e) => {
     setCryptoAmount(e.target.value);
@@ -45,7 +48,7 @@ const SellForm = ({ crypto, name, amount, totalPrice }) => {
       })
       .then((res) => {
         console.log(res);
-        setOpen(false);
+        handleClose();
       })
       .catch((err) => console.log(err));
   };
@@ -58,7 +61,6 @@ const SellForm = ({ crypto, name, amount, totalPrice }) => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Button variant="outlined" onClick={handleOpen}>
-        Open dialog
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle sx={{ bgcolor: '#1d1d20', color: 'white' }}>Sell {crypto.name}</DialogTitle>

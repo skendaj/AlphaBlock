@@ -32,10 +32,12 @@ module.exports.sellCoin = (req, res) => {
         });
 }; 
 
+
+// buyCoin
 module.exports.buyCoin = (req, res) => {
-  console.log(req.body);
+  // // console.log(req.body);
   const usrId = req.params.id;
-  console.log("usrID" + req.params.id);
+  // console.log("usrID" + req.params.id);
 
   // Check if req.body.coins exists and is an array
   if (!req.body.coins || !Array.isArray(req.body.coins) || req.body.coins.length === 0) {
@@ -44,47 +46,41 @@ module.exports.buyCoin = (req, res) => {
 
   const coinData = req.body.coins[0];
 
-  Coin.findOne({ name: coinData.name })
+  User.findOne({ _id: usrId })
+  .populate('coins')
   .then((coin) => {
-    if (coin) {
-      coin.amount += parseFloat(coinData.amount);
-      return coin.save();
-      
+   
+    const coinExist = coin.coins.find(obj => obj.name === req.body.coins[0].name);
+
+    if (coinExist) {
       console.log('Coin exists:', coin);
+      coinExist.amount += parseFloat(coinData.amount);
+      return coinExist.save();
+      
+      
     } else {
-      Coin.create(coinData)
-    .then((coin) => {
-      const coinData2 = coin._id;
+      console.log('Coin create:');
+    Coin.create(coinData)
+    .then((coinOrg ) => {
+      console.log('Coin create:', coinOrg);
+      const coinData2 = coinOrg._id;
 
-      const userData = {
-        id: coin._id,
-        name: req.body.name,
-        amount: req.body.amount,
-        totalPrice: req.body.totalPrice,
-      };
+      coin.coins.push(coinData2)
 
-      User.findOneAndUpdate(
-        { _id: usrId },
-        { $push: { coins: coinData2 } },
-        { new: true, runValidators: true }
-      )
-        .then((user) => {
-          return res.json(user);
-        })
-        .catch((err) => {
-          console.log("usrerr" + err);
-          res.json({ message: "Something user went wrong", error: err });
-        });
+
+         
+          return coin.save({ validateBeforeSave: false });
+          
     })
     .catch((err) => {
       console.log(err);
-      res.json({ message: "Something coin went wrong", error: err });
+      return err
     });
-      console.log('Coin does not exist');
+      
     }
   })
-  .then((knp)=> {
-    return res.json("test");
+  .then((ppp)=> {
+    return res.json(ppp);
   })
   .catch((error) => {
     console.log('Error occurred while checking coin:', error);

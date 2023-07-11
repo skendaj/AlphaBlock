@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 
-const BuyForm = ({ crypto, name }) => {
-    const [open, setOpen] = useState(true);
+const BuyForm = ({ crypto, name,setOpen,open, setSelectedCrypto}) => {
+    // const [open, setOpen] = useState(true);
     const [cryptoAmount, setCryptoAmount] = useState('');
     const [usdValue, setUsdValue] = useState('');
     const [priceUsd, setPriceUsd] = useState(0);
@@ -31,6 +31,9 @@ const BuyForm = ({ crypto, name }) => {
 
     const handleClose = () => {
         setOpen(false);
+        setSelectedCrypto(null);
+        setCryptoAmount("");
+        setUsdValue("");
     };
 
     const handleCryptoAmountChange = (e) => {
@@ -69,7 +72,7 @@ const BuyForm = ({ crypto, name }) => {
         })
             .then(res => {
                 console.log(res);
-                setOpen(false);
+                handleClose();
             })
             .catch(err => console.log(err));
 
@@ -81,7 +84,6 @@ const BuyForm = ({ crypto, name }) => {
     return (
         <div>
             <Button variant="outlined" onClick={handleOpen}>
-                Open dialog
             </Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle sx={{ bgcolor: "#1d1d20", color: "white" }}>Buy {crypto.name}</DialogTitle>

@@ -85,11 +85,11 @@ const IndexCell = styled(TableCell)(({ theme }) => ({
 
 
 const Portfolio = () => {
-    const [open, setOpen] = useState(true);
     const [sortField, setSortField] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
     const [portfolio, setPortfolio] = useState([]);
     const [showSellForm, setShowSellForm] = useState(false);
+    const [open, setOpen] = useState(true);
     const [selectedCrypto, setSelectedCrypto] = useState(null);
     const navigate = useNavigate();
     const userId = localStorage.getItem('userId');
@@ -195,7 +195,7 @@ const Portfolio = () => {
                     </TransparentTable>
                 </CenteredTableContainer>
             </TableContainer>
-            {selectedCrypto && (<SellForm setOpen={setShowSellForm} setSelectedCrypto={setSelectedCrypto} crypto={selectedCrypto} name={selectedCrypto.name} amount={selectedCrypto.amount} totalPrice={selectedCrypto.totalPrice} />
+            {selectedCrypto && (<SellForm crypto={selectedCrypto} name={selectedCrypto.name} amount={selectedCrypto.amount} totalPrice={selectedCrypto.totalPrice} setOpen={setOpen} open={open} setSelectedCrypto= {setSelectedCrypto} />
             )}
         </div>
     );
