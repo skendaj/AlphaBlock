@@ -17,7 +17,7 @@ AlphaBlock is a powerful MERN Stack (MongoDB, Express.js, React.js, Node.js) app
 Please note that AlphaBlock is currently under development, and additional features and improvements will be added in future updates.
 
 ![AlphaBlock Screenshot](screenshot.png)
-![AlphaBlock Screenshot2](screenshot2.png)
+
 
 ## Installation
 
@@ -28,6 +28,10 @@ Please note that AlphaBlock is currently under development, and additional featu
 5. Start the client: `cd client && npm start`
 6. Open your browser and visit: `http://localhost:3000`
 
+![AlphaBlock Screenshot2](screenshot2.png)
+
 ## Contact
 
 If you have any questions or feedback, please feel free to reach out to us at [skendajbruno07@gmail.com](mailto:skendajbruno07@gmail.com).
+
+![AlphaBlock Screenshot3](screenshot3.png)
